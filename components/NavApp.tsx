@@ -1,21 +1,27 @@
 
 
 "use client"
-import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenu, NavbarMenuItem, NavbarMenuToggle,Tabs,Tab } from "@nextui-org/react";
 import React from "react";
 
+import {usePathname} from "next/navigation";
 
 function NavApp() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-    const menuItems = [
-        "Rutas Hoy",
-        "Conductores",
-        "Configuracion",
-        "Reportes",
-        "Cerrar Session",
+    const menuItems = [{
+        path:"/dashboard",
+        name:"Reportes"
+    },
+    {
+        path:"/users",
+        name:"Conductores"
+    },
+    
     ];
 
+    const pathname = usePathname();
+    console.log(pathname)
     return (
         <Navbar style={{ width: "100%" }} onMenuOpenChange={setIsMenuOpen}>
             <NavbarContent>
@@ -31,22 +37,14 @@ function NavApp() {
             </NavbarContent>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarItem>
-                    <Link color="foreground" href="/">
-                        Rutas Hoy
-                    </Link>
-                </NavbarItem>
-                <NavbarItem isActive>
-                    <Link href="/users" aria-current="page" color="primary">
-                        Conductores
-                    </Link>
-                </NavbarItem>
-                <NavbarItem>
-                    <Link color="foreground" href="/rutas">
-                        Rutas Disponibles
-                    </Link>
-                </NavbarItem>
-            </NavbarContent>
+                <Tabs  selectedKey={pathname}>
+      <Tab key="/dashboard"  title="Reportes" href="/dashboard">
+             </Tab>
+      <Tab key="/users" title="Conductores" href="/users">
+             </Tab>
+    
+    </Tabs>
+                          </NavbarContent>
             <NavbarContent as="div" justify="end">
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
@@ -55,40 +53,35 @@ function NavApp() {
                             as="button"
                             className="transition-transform"
                             color="secondary"
-                            name="Jason Hughes"
+                            name="admintrackbusilo@gmail.com"
                             size="sm"
                             src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                         />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="profile" className="h-14 gap-2">
-                            <p className="font-semibold">Signed in as</p>
-                            <p className="font-semibold">zoey@example.com</p>
+                            <p className="font-semibold">Iniciado como</p>
+                            <p className="font-semibold">admintrackbusilo@gmail.com</p>
                         </DropdownItem>
-                        <DropdownItem key="settings">My Settings</DropdownItem>
-                        <DropdownItem key="team_settings">Team Settings</DropdownItem>
-                        <DropdownItem key="analytics">Analytics</DropdownItem>
-                        <DropdownItem key="system">System</DropdownItem>
-                        <DropdownItem key="configurations">Configurations</DropdownItem>
-                        <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                        
                         <DropdownItem key="logout" color="danger">
-                            Log Out
+                            Cerrar  Session
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>
             <NavbarMenu>
                 {menuItems.map((item, index) => (
-                    <NavbarMenuItem key={`${item}-${index}`}>
+                    <NavbarMenuItem key={index}>
                         <Link
                             color={
                                 index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
                             }
                             className="w-full"
-                            href="#"
+                            href={item.path}
                             size="lg"
                         >
-                            {item}
+                            {item.name}
                         </Link>
                     </NavbarMenuItem>
                 ))}

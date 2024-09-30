@@ -2,9 +2,12 @@
 "use client"
 //@ts-ignore
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import { useEffect, useRef, useState } from 'react';
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiZ29uemFsb2F4ZWxoIiwiYSI6ImNrdjFyYnltYjA5Z3IycGwweWtwcnZzOWQifQ.3LHakWc4sqPqz84a8YaQ4w';
+
+import { useEffect, useRef, useState } from 'react';
+//@ts-ignore
+
+
 
 export default function MapScreen() {
     const mapContainer = useRef(null);

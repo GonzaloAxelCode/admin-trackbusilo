@@ -33,7 +33,7 @@
     "allowSyntheticDefaultImports": true,
   },
  
-    "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "app/(dashboard)/components/datamarkings.js"],
+    "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx", "app/dashboard/components/datamarkings.js"],
   "exclude": [
     "node_modules"
   ]

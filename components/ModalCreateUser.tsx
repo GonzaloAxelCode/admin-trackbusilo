@@ -4,7 +4,7 @@ import { useDataContext } from "../context/DataContext";
 import { LockIcon, MailIcon } from "./icons";
 
 export default function ModalCreateUser() {
-    const { isOpenCreate, onOpenChangeModalCreate } = useDataContext();
+    const { isOpenCreate, onOpenChangeModalCreate ,onCloseModalCreate} = useDataContext();
 
     // Estados para todos los campos
     const [username, setUsername] = useState("");
@@ -66,6 +66,7 @@ export default function ModalCreateUser() {
         setloading(true)
         await registerUser(userData)
         setloading(false)
+        onCloseModalCreate()
     };
 
     return (
@@ -87,8 +88,8 @@ export default function ModalCreateUser() {
                                 endContent={
                                     <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                                 }
-                                label="Email"
-                                placeholder="Ingrese su email"
+                                label="PLACA"
+                                placeholder="Ingrese la placa del auto"
                                 variant="bordered"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
@@ -97,7 +98,7 @@ export default function ModalCreateUser() {
                                 endContent={
                                     <LockIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
                                 }
-                                label="Password"
+                                label="CONTRASEÑA"
                                 placeholder="Ingrese su contraseña"
                                 type="password"
                                 variant="bordered"

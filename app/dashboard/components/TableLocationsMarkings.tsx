@@ -19,6 +19,7 @@ import React from "react";
 import { ChevronDownIcon, SearchIcon } from "@/components/icons";
 import { columns, statusOptions } from "./datamarkings";
 
+import { STATE_MARKING } from "@/constants/globalconstants";
 import { useDataContext } from "@/context/DataContext";
 import { capitalize, formatTime } from "@/lib/utils";
 
@@ -71,29 +72,29 @@ export default function TableLocationsMarkings() {
         return filteredItems
     }, [page, filteredItems, rowsPerPage]);
 
-    const renderCell = React.useCallback((user, columnKey) => {
-        const cellValue = user[columnKey];
+    const renderCell = React.useCallback((marking, columnKey) => {
+        const cellValue = marking[columnKey];
 
         switch (columnKey) {
 
             case "nombre_origen_ubicacion":
                 return (
                     <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{user.nombre_origen_ubicacion}</p>
-                        <p className="text-bold text-tiny capitalize text-default-400">{user.nombre_destino_ubicacion}</p>
+                        <p className="text-bold text-small capitalize">{marking.nombre_origen_ubicacion}</p>
+
                     </div>
                 );
-            case "hora_marca":
+            case "hora_marca_formated":
                 return (
 
-                    <p className="">{formatTime(user.hora_marca)}</p>
+                    <p className="">{formatTime(marking.hora_marca)}</p>
 
                 );
             case "state":
-                const stateColor: any = user.state == "Temprano" ? "success" : user.state === "Tarde" ? "danger" : "warning"
+                const stateColor: any = marking.state == STATE_MARKING.EXACTO ? "success" : marking.state === STATE_MARKING.TARDE ? "danger" : "warning"
                 return (
                     <Chip className="capitalize" color={stateColor} size="sm" variant="flat">
-                        {user.state}
+                        {marking.state}
                     </Chip>
                 );
 
@@ -127,15 +128,7 @@ export default function TableLocationsMarkings() {
         return (
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-end">
-                    <Input
-                        isClearable
-                        className="w-full sm:max-w-[44%]"
-                        placeholder="Buscar por ubicacion"
-                        startContent={<SearchIcon />}
-                        value={filterValue}
-                        onClear={() => onClear()}
-                        onValueChange={onSearchChange}
-                    />
+                    
                     <div className="flex gap-3">
                         <Dropdown>
                             <DropdownTrigger className="hidden sm:flex">
@@ -176,20 +169,15 @@ export default function TableLocationsMarkings() {
 
     return (
         <Table
-            aria-label="Example table with custom cells, pagination and sorting"
+
             isHeaderSticky
-
-
             classNames={{
                 wrapper: "min-h-[382px]",
             }}
             showSelectionCheckboxes={false}
-
-
-            topContent={topContent}
+            topContent={null}
             topContentPlacement="outside"
-
-
+            layout="auto"
         >
             <TableHeader columns={headerColumns}>
                 {(column) => (

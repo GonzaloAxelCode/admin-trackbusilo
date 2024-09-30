@@ -27,25 +27,17 @@ import { capitalize } from "@/lib/utils";
 import { columns, statusOptions } from "./data";
 
 import ModalCreateUser from "../../components/ModalCreateUser";
-const statusColorMap: any = {
-    activo: "success",
-    inactivo: "danger",
-    pendiente: "warning"
-
-};
-
 
 const INITIAL_VISIBLE_COLUMNS = [
-    "nombres",
-    "username",
 
+   "username",
+    "nombres",
     "active_user",
-    "placa_auto",
+
     "telefono",
     "direccion",
-    "password", "actions"
-];
-export const runtime = 'edge';
+     ];
+
 export default function UsersPage() {
     const { onOpenCreate, users } = useDataContext()
     const [filterValue, setFilterValue] = React.useState<any>("");
@@ -54,7 +46,7 @@ export default function UsersPage() {
     const [statusFilter, setStatusFilter] = React.useState<any>("all");
     const [rowsPerPage, setRowsPerPage] = React.useState<any>(10);
     const [sortDescriptor, setSortDescriptor] = React.useState<any>({
-        column: "nombres",
+        column: "username",
         direction: "ascending",
     });
     const [page, setPage] = React.useState<any>(1);
@@ -74,7 +66,7 @@ export default function UsersPage() {
 
         if (hasSearchFilter) {
             filteredUsers = filteredUsers.filter((user) =>
-                user.nombres.toLowerCase().includes(filterValue.toLowerCase()),
+                user.username.toLowerCase().includes(filterValue.toLowerCase()),
             );
         }
         if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
@@ -107,6 +99,13 @@ export default function UsersPage() {
         const cellValue = user[columnKey];
 
         switch (columnKey) {
+ case "username":
+                return (
+                    <div className="flex flex-col">
+                        <p className="text-bold text-small capitalize">{cellValue}</p>
+                        <p className="text-bold text-tiny capitalize text-default-500">{user.username || "Sin placa"}</p>
+                    </div>
+                );
             case "nombres":
                 return (
                     <User
@@ -127,18 +126,7 @@ export default function UsersPage() {
                         <p className="text-bold text-tiny capitalize text-default-500">{user.placa_auto || "Sin placa"}</p>
                     </div>
                 );
-            case "active_user":
-                return (
-                    <Chip
-                        className="capitalize border-none gap-1 text-default-600"
-                        color={user?.active_user == 1 ? statusColorMap.active : statusColorMap.inactivo}
-                        size="sm"
-                        variant="dot"
-                    >
-                        {cellValue == 1 ? "Activo" : "Inactivo"}
-                    </Chip>
-                );
-            case "actions":
+        case "actions":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
                         <Dropdown className="bg-background border-1 border-default-200">
@@ -148,7 +136,7 @@ export default function UsersPage() {
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu>
-                                <DropdownItem>Ver rutas</DropdownItem>
+
                                 <DropdownItem>Editar Usuario</DropdownItem>
                                 <DropdownItem>Eliminar Usuario</DropdownItem>
                             </DropdownMenu>
@@ -177,7 +165,7 @@ export default function UsersPage() {
 
     const topContent = React.useMemo(() => {
         return (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 mt-5">
                 <ModalCreateUser />
                 <div className="flex justify-between gap-3 items-end">
                     <Input
@@ -195,32 +183,7 @@ export default function UsersPage() {
                         onValueChange={onSearchChange}
                     />
                     <div className="flex gap-3">
-                        <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
-                                <Button
-                                    endContent={<ChevronDownIcon className="text-small" />}
-                                    size="sm"
-                                    variant="flat"
-                                >
-                                    Estado
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={statusFilter}
-                                selectionMode="multiple"
-                                onSelectionChange={setStatusFilter}
-                            >
-                                {statusOptions.map((status) => (
-                                    <DropdownItem key={status.uid} className="capitalize">
-                                        {capitalize(status.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-                        <Dropdown>
+                                               <Dropdown>
                             <DropdownTrigger className="hidden sm:flex">
                                 <Button
                                     endContent={<ChevronDownIcon className="text-small" />}
@@ -257,18 +220,7 @@ export default function UsersPage() {
                 </div>
                 <div className="flex justify-between items-center">
                     <span className="text-default-400 text-small">Total {users.length} usuarios</span>
-                    <label className="flex items-center text-default-400 text-small">
-                        Usuarios por pagina:
-                        <select
-                            className="bg-transparent outline-none text-default-400 text-small"
-                            onChange={onRowsPerPageChange}
-                        >
-                            <option value="5">5</option>
-                            <option value="10">10</option>
-                            <option value="15">15</option>
-                        </select>
-                    </label>
-                </div>
+                                   </div>
             </div>
         );
     }, [

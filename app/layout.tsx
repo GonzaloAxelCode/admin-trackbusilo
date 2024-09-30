@@ -18,14 +18,14 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="">
+      <body className="max-w-[1500px]  w-full px-4 bg-white mx-auto ">
         <NextUIProvider>
           <NavApp />
           <DataProvider>
-            <main className='mb-7 flex px-3 md:px-10 lg:px-20 flex justify-center'>
-              <div>
-                {children}
-              </div>
+            <main className="main-layout w-full">
+
+              {children}
+
             </main>
           </DataProvider>
         </NextUIProvider>

@@ -54,7 +54,7 @@ export const DataProvider = ({ children }) => {
   const { data: users, error: errorUsers, isLoading: isLoadingUsers } = useSWR("https://apiexample.gonzaloaxelh.workers.dev/users", fetcher,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 10000,
+      dedupingInterval: 1000,
     })
   const [selectTrip, setSelectTrip] = useState(0)
 
@@ -73,7 +73,7 @@ export const DataProvider = ({ children }) => {
     fetcher,
     {
       revalidateOnFocus: false,
-      dedupingInterval: 10000,
+      dedupingInterval: 1000,
     }
   );
 
@@ -107,9 +107,9 @@ export const DataProvider = ({ children }) => {
       window.location.href = '/login';
     }
   };
-  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeModalCreate } = useDisclosure();
+  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeModalCreate ,onClose:onCloseModalCreate} = useDisclosure();
   return (
-    <DataContext.Provider value={{ registerUser, isOpenCreate, onOpenCreate, onOpenChangeModalCreate, logout, loadingTrips, isLoadingUsers, errorUsers, dateSelected, setDateSelected, users: users?.users || [], selectUser, setSelectUser, selectTrip, setSelectTrip, trips: tripsData?.trips || [], markings: tripsData?.trips[selectTrip]?.markingtime || [], errorTrips } as any}>
+    <DataContext.Provider value={{ registerUser, isOpenCreate, onOpenCreate, onOpenChangeModalCreate,onCloseModalCreate, logout, loadingTrips, isLoadingUsers, errorUsers, dateSelected, setDateSelected, users: users?.users || [], selectUser, setSelectUser, selectTrip, setSelectTrip, trips: tripsData?.trips || [], markings: tripsData?.trips[selectTrip]?.markingtime || [], errorTrips } as any}>
       {children}
     </DataContext.Provider>
   );

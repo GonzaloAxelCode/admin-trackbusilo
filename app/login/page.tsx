@@ -4,7 +4,7 @@ import { EyeFilledIcon, EyeSlashFilledIcon } from '@/components/icons';
 import handleLogin from '@/services/login';
 import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
 import { useState } from 'react';
-export const runtime = 'edge';
+
 export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
