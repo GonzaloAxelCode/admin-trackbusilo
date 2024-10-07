@@ -68,14 +68,31 @@ export const DataProvider = ({ children }) => {
   }
   const [dateSelected, setDateSelected] = useState<string>(getLimaTime());
   console.log(dateSelected)
+
   const { data: tripsData, error: errorTrips, isLoading: loadingTrips } = useSWR(
-    `https://apiexample.gonzaloaxelh.workers.dev/trips?iduser=${selectUser}&date_created=${extractDate(dateSelected)}`,
+    `https://apiexample.gonzaloaxelh.workers.dev/trips/${selectUser}`,
     fetcher,
     {
       revalidateOnFocus: false,
       dedupingInterval: 1000,
     }
   );
+
+  function filterTrips(trips: any[]= [], selectedDate: string): any[] {
+    // Convertir selectedDate a un objeto Date
+    const selectedDateObj = new Date(selectedDate);
+
+    // Función auxiliar para comparar si dos fechas son iguales (solo la fecha sin hora)
+    function isSameDate(date1: Date, date2: Date): boolean {
+      return date1.toISOString().split('T')[0] === date2.toISOString().split('T')[0];
+    }
+    return trips.filter(trip => {
+      // Convertir `date_created` a un objeto Date
+      const dateCreated = new Date(trip.starttime);
+      return isSameDate(dateCreated, selectedDateObj);
+    });
+  }
+  const allTrips = filterTrips(tripsData?.trips,dateSelected)
 
   const registerUser = async (userData: any) => {
     try {
@@ -109,7 +126,7 @@ export const DataProvider = ({ children }) => {
   };
   const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeModalCreate ,onClose:onCloseModalCreate} = useDisclosure();
   return (
-    <DataContext.Provider value={{ registerUser, isOpenCreate, onOpenCreate, onOpenChangeModalCreate,onCloseModalCreate, logout, loadingTrips, isLoadingUsers, errorUsers, dateSelected, setDateSelected, users: users?.users || [], selectUser, setSelectUser, selectTrip, setSelectTrip, trips: tripsData?.trips || [], markings: tripsData?.trips[selectTrip]?.markingtime || [], errorTrips } as any}>
+    <DataContext.Provider value={{ registerUser, isOpenCreate, onOpenCreate, onOpenChangeModalCreate,onCloseModalCreate, logout, loadingTrips, isLoadingUsers, errorUsers, dateSelected, setDateSelected, users: users?.users || [], selectUser, setSelectUser, selectTrip, setSelectTrip, trips: allTrips || [], markings: tripsData?.trips[selectTrip]?.markingtime || [], errorTrips } as any}>
       {children}
     </DataContext.Provider>
   );

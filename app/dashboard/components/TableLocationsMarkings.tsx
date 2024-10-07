@@ -75,12 +75,13 @@ export default function TableLocationsMarkings() {
     const renderCell = React.useCallback((marking, columnKey) => {
         const cellValue = marking[columnKey];
 
+  
         switch (columnKey) {
 
             case "nombre_origen_ubicacion":
                 return (
                     <div className="flex flex-col">
-                        <p className="text-bold text-small capitalize">{marking.nombre_origen_ubicacion}</p>
+                        <p className="text-bold  capitalize">{marking.nombre_origen_ubicacion}</p>
 
                     </div>
                 );
@@ -92,10 +93,26 @@ export default function TableLocationsMarkings() {
                 );
             case "state":
                 const stateColor: any = marking.state == STATE_MARKING.EXACTO ? "success" : marking.state === STATE_MARKING.TARDE ? "danger" : "warning"
+
+  const color = (statemarking: any) => {
+
+    if (statemarking === STATE_MARKING.TARDE) {
+      return "rgba(255, 0,0, 0.4)"//red
+    } else if (statemarking === STATE_MARKING.EXACTO) {
+      return "rgba(0, 215, 0, 0.4)" //green
+    } else {
+      return "rgba(238, 221, 10, 0.5)"//yellow
+    }
+  }
                 return (
-                    <Chip className="capitalize" color={stateColor} size="sm" variant="flat">
-                        {marking.state}
-                    </Chip>
+                    <div className="capitalize" style={{
+                        background:color(marking.state)
+
+                        }}>
+                        <p>
+                            {marking.state}
+                        </p>
+                    </div>
                 );
 
             default:
@@ -103,69 +120,6 @@ export default function TableLocationsMarkings() {
         }
     }, []);
 
-
-
-    const onRowsPerPageChange = React.useCallback((e) => {
-        setRowsPerPage(Number(e.target.value));
-        setPage(1);
-    }, []);
-
-    const onSearchChange = React.useCallback((value) => {
-        if (value) {
-            setFilterValue(value);
-            setPage(1);
-        } else {
-            setFilterValue("");
-        }
-    }, []);
-
-    const onClear = React.useCallback(() => {
-        setFilterValue("")
-        setPage(1)
-    }, [])
-
-    const topContent = React.useMemo(() => {
-        return (
-            <div className="flex flex-col gap-4">
-                <div className="flex justify-between gap-3 items-end">
-                    
-                    <div className="flex gap-3">
-                        <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
-                                    Estado de marca
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={statusFilter}
-                                selectionMode="multiple"
-                                onSelectionChange={setStatusFilter}
-                            >
-                                {statusOptions.map((status) => (
-                                    <DropdownItem key={status.uid} className="capitalize">
-                                        {capitalize(status.name)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </Dropdown>
-
-                    </div>
-                </div>
-
-            </div>
-        );
-    }, [
-        filterValue,
-        statusFilter,
-        visibleColumns,
-        onRowsPerPageChange,
-        markings.length || 0,
-        onSearchChange,
-        hasSearchFilter,
-    ]);
 
     return (
         <Table
@@ -195,7 +149,7 @@ export default function TableLocationsMarkings() {
             </Skeleton> : "No hay marcas de tiempo"} items={items}>
                 {(item) => (
                     <TableRow key={item.id_marca}>
-                        {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                        {(columnKey) => <TableCell className="text-xl">{renderCell(item, columnKey)}</TableCell>}
                     </TableRow>
                 )}
             </TableBody>
