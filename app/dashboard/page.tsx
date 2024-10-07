@@ -1,55 +1,39 @@
 "use client"
 
-import {Tabs, Tab, Chip} from "@nextui-org/react";
-import { useDataContext } from "@/context/DataContext";
-import { useEffect, useState } from "react";
-import TableLocationsMarkings from "./components/TableLocationsMarkings";
-import {Autocomplete, Calendar,AutocompleteItem} from "@nextui-org/react";
-import {parseDate} from '@internationalized/date';
-import ListConductoresScroll from "./components/ListConductoresScroll";
 import SidebarLaps from "@/components/SidebarLaps";
+import { useDataContext } from "@/context/DataContext";
+import DropdownSelectDate from "./components/DropdownSelectDate";
+import TableLocationsMarkings from "./components/TableLocationsMarkings";
 export default function ProductsPage() {
 
-  const { users, isLoadingUsers, setSelectUser ,trips,setSelectTrip} = useDataContext();
+  const { users, isLoadingUsers, selectUser, setSelectUser, trips, setSelectTrip } = useDataContext();
 
-   return (
-    <div className='bg-white flex flex-wrap md:flex-nowrap w-full gap-2 relative mt-8'>
-      
-      <div className="w-[100%]  md:w-[30%]">
-
-        <div className="top-[50px] sticky">
-
-           
-          <ListConductoresScroll />
-        
-      <div className="hidden md:grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-auto gap-2">
-        {users.map((user:any,index:any) => (
-          <div
-            onClick={()=> setSelectUser (user.id_user)}
-            key={index}
-            className="aspect-square bg-[#2b2b2b] cursor-pointer  border-2 rounded-lg flex items-center justify-center text-white   w-full  max-w-[100px] border border-white mx-auto"
-          >
-            <p className="font-bold text-xs sm:text-sm ">
-            </p>
-            { user.username || user.placa_auto}
-          </div>
-        ))}
-      </div>
-
+  return (
+    <div className='bg-white flex flex-wrap md:flex-nowrap w-full gap-2 relative mt-8 flex-col'>
+      <div className="flex w-full gap-4">
+        <div>
+          <DropdownSelectDate />
         </div>
-
+        <div className="flex flex-wrap w-full  gap-3 h-[280px] overflow-y-auto">
+          {[...users].map((user: any, index: any) => (
+            <div
+              onClick={() => setSelectUser(user.id_user)}
+              key={index}
+              className={` w-[100px] max-h-[30px] ${user.id_user === selectUser ? "bg-[#2b2b2b]" : "bg-white"} border-2 border-[#2b2b2b] cursor-pointer  rounded-lg flex items-center justify-center  ${user.id_user === selectUser ? "text-white" : "text-black"}`}
+            >
+              <p className="font-bold text-xs ">
+                {user.username || user.placa_auto}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="w-full md:w-[100%] h-screen md:h-auto">
-        <div className=" pb-6 flex justify-between">
-         
-                 </div>
         <div className="flex w-full flex-col mb-4 ">
           <SidebarLaps />
-     </div>  
-           <TableLocationsMarkings  />
-
-      </div> 
-   
+        </div>
+        <TableLocationsMarkings />
+      </div>
     </div>
   );
 }

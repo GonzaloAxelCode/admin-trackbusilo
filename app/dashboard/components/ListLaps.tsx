@@ -42,37 +42,37 @@ const ListLaps = () => {
                 onClick={() => setSelectTrip(index)}
               >
                 {({ active, checked }) => (
-                  <>
-                    <div className="flex w-full items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="text-sm">
-                          <RadioGroup.Label
-                            as="p"
-                            className={`font-medium  ${checked ? 'text-white' : 'text-gray-900'
-                              }`}
-                          >
-                            Enterprise
-                          </RadioGroup.Label>
-                          <RadioGroup.Description
-                            as="span"
-                            className={`inline ${checked ? 'text-sky-100' : 'text-gray-500'
-                              }`}
-                          >
-                            <span>
-                              12 GB/ 0.1
-                            </span>{' '}
-                            <span aria-hidden="true">&middot;</span>{' '}
-                            <span>SSD 200</span>
-                          </RadioGroup.Description>
-                        </div>
+
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="text-sm">
+                        <RadioGroup.Label
+                          as="p"
+                          className={`font-medium  ${checked ? 'text-white' : 'text-gray-900'
+                            }`}
+                        >
+                          Enterprise
+                        </RadioGroup.Label>
+                        <RadioGroup.Description
+                          as="span"
+                          className={`inline ${checked ? 'text-sky-100' : 'text-gray-500'
+                            }`}
+                        >
+                          <span>
+                            12 GB/ 0.1
+                          </span>{' '}
+                          <span aria-hidden="true">&middot;</span>{' '}
+                          <span>SSD 200</span>
+                        </RadioGroup.Description>
                       </div>
-                      {checked && (
-                        <div className="shrink-0 text-white">
-                          <CheckIcon className="h-6 w-6" />
-                        </div>
-                      )}
                     </div>
-                  </>
+                    {checked && (
+                      <div className="shrink-0 text-white">
+                        <CheckIcon className="h-6 w-6" />
+                      </div>
+                    )}
+                  </div>
+
                 )}
               </RadioGroup.Option>
             ))}

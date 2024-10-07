@@ -17,7 +17,7 @@ async function handleLogin({ username, password }) {
     Cookies.set('token', data.token, { expires: 7, secure: true, sameSite: 'strict' });
 
     // Redirige al usuario a la página de perfil o dashboard
-    window.location.href = '/';
+    window.location.href = '/dashboard';
     return true
   } else {
     return false
