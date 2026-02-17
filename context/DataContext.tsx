@@ -1,4 +1,5 @@
 "use client";
+import { URL_BASE_BACKEND } from '@/constants/globalconstants';
 import { useDisclosure } from '@nextui-org/react';
 import Cookies from 'js-cookie';
 
@@ -51,7 +52,7 @@ const fetcher = async (url: string) => {
 };
 export const DataProvider = ({ children }) => {
 
-  const { data: users, error: errorUsers, isLoading: isLoadingUsers } = useSWR("https://apiexample.gonzaloaxelh.workers.dev/users", fetcher,
+  const { data: users, error: errorUsers, isLoading: isLoadingUsers } = useSWR(URL_BASE_BACKEND + "/users", fetcher,
     {
       revalidateOnFocus: false,
       dedupingInterval: 1000,
@@ -70,7 +71,7 @@ export const DataProvider = ({ children }) => {
   console.log(dateSelected)
 
   const { data: tripsData, error: errorTrips, isLoading: loadingTrips } = useSWR(
-    `https://apiexample.gonzaloaxelh.workers.dev/trips/${selectUser}`,
+    `${URL_BASE_BACKEND}/trips/${selectUser}`,
     fetcher,
     {
       revalidateOnFocus: false,
@@ -78,7 +79,7 @@ export const DataProvider = ({ children }) => {
     }
   );
 
-  function filterTrips(trips: any[]= [], selectedDate: string): any[] {
+  function filterTrips(trips: any[] = [], selectedDate: string): any[] {
     // Convertir selectedDate a un objeto Date
     const selectedDateObj = new Date(selectedDate);
 
@@ -92,12 +93,12 @@ export const DataProvider = ({ children }) => {
       return isSameDate(dateCreated, selectedDateObj);
     });
   }
-  const allTrips = filterTrips(tripsData?.trips,dateSelected)
+  const allTrips = filterTrips(tripsData?.trips, dateSelected)
 
   const registerUser = async (userData: any) => {
     try {
       const token = getToken();
-      const response = await fetch("https://apiexample.gonzaloaxelh.workers.dev/user/register", {
+      const response = await fetch(URL_BASE_BACKEND + "/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -124,9 +125,9 @@ export const DataProvider = ({ children }) => {
       window.location.href = '/login';
     }
   };
-  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeModalCreate ,onClose:onCloseModalCreate} = useDisclosure();
+  const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeModalCreate, onClose: onCloseModalCreate } = useDisclosure();
   return (
-    <DataContext.Provider value={{ registerUser, isOpenCreate, onOpenCreate, onOpenChangeModalCreate,onCloseModalCreate, logout, loadingTrips, isLoadingUsers, errorUsers, dateSelected, setDateSelected, users: users?.users || [], selectUser, setSelectUser, selectTrip, setSelectTrip, trips: allTrips || [], markings: tripsData?.trips[selectTrip]?.markingtime || [], errorTrips } as any}>
+    <DataContext.Provider value={{ registerUser, isOpenCreate, onOpenCreate, onOpenChangeModalCreate, onCloseModalCreate, logout, loadingTrips, isLoadingUsers, errorUsers, dateSelected, setDateSelected, users: users?.users || [], selectUser, setSelectUser, selectTrip, setSelectTrip, trips: allTrips || [], markings: tripsData?.trips[selectTrip]?.markingtime || [], errorTrips } as any}>
       {children}
     </DataContext.Provider>
   );

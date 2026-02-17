@@ -1,27 +1,36 @@
+import { URL_BASE_BACKEND } from '@/constants/globalconstants';
 import Cookies from 'js-cookie';
 
 async function handleLogin({ username, password }) {
+  try {
+    const response = await fetch(URL_BASE_BACKEND + '/admin/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
 
-  const response = await fetch('https://apiexample.gonzaloaxelcode.workers.dev/admin/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ username, password }),
-  });
+    const data = await response.json();
 
-  const data = await response.json();
+    if (response.ok) {
 
-  if (response.ok) {
-    // Guarda el token en una cookie
-    Cookies.set('token', data.token, { expires: 7, secure: true, sameSite: 'strict' });
+      Cookies.set('token', data.token, {
+        expires: 7,
+        secure: true,
+        sameSite: 'strict',
+      });
 
-    // Redirige al usuario a la página de perfil o dashboard
-    window.location.href = '/dashboard';
-    return true
-  } else {
-    return false
-
+      window.location.href = '/dashboard';
+      return { success: true, data };
+    } else {
+      console.log(data.error)
+      return { success: false, error: data.error || 'Credenciales inválidas' };
+    }
+  } catch (err) {
+    // error de red, backend caído, etc.
+    return { success: false, error: 'Error de conexión al servidor' };
   }
 }
-export default handleLogin
+
+export default handleLogin;

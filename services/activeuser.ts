@@ -1,8 +1,9 @@
+import { URL_BASE_BACKEND } from '@/constants/globalconstants';
 import Cookies from 'js-cookie';
 
 async function toggleUserActiveStatus(userId, activeUser) {
   try {
-    const response = await fetch(`https://apiexample.gonzaloaxelcode.workers.dev/users/${userId}/status`, {
+    const response = await fetch(`${URL_BASE_BACKEND}/users/${userId}/status`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

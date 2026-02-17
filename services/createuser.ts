@@ -1,8 +1,9 @@
+import { URL_BASE_BACKEND } from '@/constants/globalconstants';
 import Cookies from 'js-cookie';
 
 async function handleRegister({ username, password }) {
   try {
-    const response = await fetch('https://apiexample.gonzaloaxelcode.workers.dev/user/register', {
+    const response = await fetch(URL_BASE_BACKEND + '/user/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -16,7 +17,7 @@ async function handleRegister({ username, password }) {
     if (response.ok) {
       console.log('Registro exitoso:', data.message);
       // Redirige al usuario a la página de perfil o dashboard, o muestra un mensaje de éxito
-    
+
     } else {
       console.error('Registro fallido:', data.error);
       // Maneja el error de registro aquí

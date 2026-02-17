@@ -1,9 +1,10 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { URL_BASE_BACKEND } from './constants/globalconstants';
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('token');
-  
+
   // Si no hay token, redirige a la página de login
   if (!token) {
     return NextResponse.redirect(new URL('/login', request.url));
@@ -11,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     // Verifica el token con tu API de autenticación
-    const response = await fetch('https://apiexample.gonzaloaxelcode.workers.dev/verify/admin', {
+    const response = await fetch(URL_BASE_BACKEND + '/verify/admin', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
